@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./src:/code/src
+    depends_on:
+      - postgres
+    env_file:
+      - envs/.env
+
+  postgres:
+    image: postgres:15.4-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - envs/postgres.env
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis-data:/data
+
+
+
+volumes:
+  backend-data:
+    name: backend-data
+  postgres-data:
+    name: postgres-data
