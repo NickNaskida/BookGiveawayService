@@ -3,6 +3,10 @@ from fastapi import APIRouter
 from src.modules.auth.manager import auth_core, auth_backend
 from src.schemas.user import UserRead, UserCreate
 from src.modules.auth.routers import users_router
+from src.api.api_v1.endpoints import (
+    genre,
+    author
+)
 
 
 api_router = APIRouter()
@@ -33,5 +37,19 @@ api_router.include_router(
 api_router.include_router(
     users_router,
     prefix="/users",
-    tags=["users"],
+    tags=["user"],
+)
+
+# Genre routes
+api_router.include_router(
+    genre.router,
+    prefix="/genres",
+    tags=["genre"],
+)
+
+# Author routes
+api_router.include_router(
+    author.router,
+    prefix="/authors",
+    tags=["author"],
 )

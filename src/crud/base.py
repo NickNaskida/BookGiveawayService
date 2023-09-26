@@ -1,7 +1,6 @@
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from fastapi import HTTPException, status
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import exc, func
 from sqlalchemy import select
@@ -26,21 +25,37 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db = db
 
     def get_db(self):
+        """Helper function to get the database session."""
         return self.db
 
     async def get(self, _id: Any, db_session: AsyncSession | None = None) -> Optional[ModelType]:
+        """
+        Get a single object from the database.
+
+        :param _id: Object id
+        :param db_session: Database session
+        :return: Single object
+        """
         db_session = db_session or self.db.session
         query = select(self.model).where(self.model.id == _id)
         response = await db_session.execute(query)
         return response.scalar_one_or_none()
 
     async def get_multi(
-            self,
-            *,
-            skip: int = 0,
-            limit: int = 100,
-            db_session: AsyncSession | None = None
+        self,
+        *,
+        skip: int = 0,
+        limit: int = 100,
+        db_session: AsyncSession | None = None
     ) -> List[ModelType]:
+        """
+        Get multiple objects from the database.
+
+        :param skip: The number of objects to skip
+        :param limit: Object limit
+        :param db_session: Database session
+        :return: List of objects
+        """
         db_session = db_session or self.db.session
         query = select(self.model).offset(skip).limit(limit).order_by(self.model.id)
         response = await db_session.execute(query)
@@ -49,6 +64,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def get_count(
             self, db_session: AsyncSession | None = None
     ) -> ModelType | None:
+        """
+        Get the total number of objects in the database.
+
+        :param db_session: Database session
+        :return: Total number of objects
+        """
         db_session = db_session or self.db.session
         response = await db_session.execute(
             select(func.count()).select_from(select(self.model).subquery())
@@ -56,13 +77,20 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return response.scalar_one()
 
     async def create(
-            self,
-            *,
-            obj_in: CreateSchemaType,
-            db_session: AsyncSession | None = None
+        self,
+        *,
+        obj_in: CreateSchemaType,
+        db_session: AsyncSession | None = None
     ) -> ModelType:
+        """
+        Create a new object.
+
+        :param obj_in: Object to create
+        :param db_session: Database session
+        :return: Created object
+        """
         db_session = db_session or self.db.session
-        db_obj = self.model.from_orm(obj_in)  # type: ignore
+        db_obj = self.model(**obj_in.model_dump())
 
         try:
             db_session.add(db_obj)
@@ -84,6 +112,14 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_new: Union[UpdateSchemaType, Dict[str, Any]],
         db_session: AsyncSession | None = None
     ) -> ModelType:
+        """
+        Update an object.
+
+        :param obj_current: Current database object
+        :param obj_new: Updated object
+        :param db_session: Database session
+        :return: Updated Object
+        """
         db_session = db_session or self.db.session
 
         if isinstance(obj_new, dict):
@@ -95,13 +131,27 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         for field in update_data:
             setattr(obj_current, field, update_data[field])
 
-        db_session.add(obj_current)
-        await db_session.commit()
+        try:
+            db_session.add(obj_current)
+            await db_session.commit()
+        except exc.IntegrityError:
+            await db_session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Resource already exists",
+            )
         await db_session.refresh(obj_current)
 
         return obj_current
 
     async def remove(self, *, _id: int, db_session: AsyncSession | None = None) -> ModelType:
+        """
+        Delete an object from the database.
+
+        :param _id: Database object id
+        :param db_session: Database session
+        :return: Deleted object
+        """
         db_session = db_session or self.db.session
         query = select(self.model).where(self.model.id == _id)
         response = await db_session.execute(query)
