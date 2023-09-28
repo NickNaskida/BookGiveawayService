@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class AuthorBase(BaseModel):
-    full_name: str = "Robert C. Martin"
+    full_name: str = "James Clear"
 
 
 class AuthorRead(AuthorBase):

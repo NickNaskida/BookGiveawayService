@@ -5,7 +5,8 @@ from src.schemas.user import UserRead, UserCreate
 from src.modules.auth.routers import users_router
 from src.api.api_v1.endpoints import (
     genre,
-    author
+    author,
+    book
 )
 
 
@@ -52,4 +53,11 @@ api_router.include_router(
     author.router,
     prefix="/authors",
     tags=["author"],
+)
+
+# Book routes
+api_router.include_router(
+    book.router,
+    prefix="/books",
+    tags=["book"],
 )

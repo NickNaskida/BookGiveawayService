@@ -2,6 +2,7 @@ from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from fastapi import HTTPException, status
 from pydantic import BaseModel
+from asyncpg.exceptions import ForeignKeyViolationError
 from sqlalchemy import exc, func
 from sqlalchemy import select
 from fastapi_async_sqlalchemy import db

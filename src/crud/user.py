@@ -18,7 +18,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         :param db_session: Database session
         :return: User / None
         """
-        db_session = db_session or self.db.session
+        db_session = db_session or self.get_db().session
         query = select(self.model).where(self.model.id == _id)
         response = await db_session.execute(query)
         return response.unique().scalar_one_or_none()
@@ -31,7 +31,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         :param db_session: Database session
         :return: User / None
         """
-        db_session = db_session or self.get_db()
+        db_session = db_session or self.get_db().session
         query = await db_session.execute(select(User).where(User.email == email))
         return query.unique().scalar_one_or_none()
 

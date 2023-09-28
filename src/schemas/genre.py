@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class GenreBase(BaseModel):
-    name: str = "Fiction"
+    name: str = "Self-help"
 
 
 class GenreRead(GenreBase):

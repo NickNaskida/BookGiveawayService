@@ -16,14 +16,14 @@ class Book(PkBase):
     """Book model."""
     __tablename__ = 'books'
 
-    title = Column(String(100))
+    name = Column(String(100), unique=True)
     description = Column(String(500))
     condition = Column(SQLEnum(BookCondition))
     page_count = Column(Integer)
     author_id = Column(Integer, ForeignKey('authors.id'))
-    author = relationship('Author', back_populates='books')
+    author = relationship('Author', back_populates='books', lazy='selectin')
     genre_id = Column(Integer, ForeignKey('genres.id'))
-    genre = relationship('Genre', back_populates='books')
+    genre = relationship('Genre', back_populates='books', lazy='selectin')
 
 
 
