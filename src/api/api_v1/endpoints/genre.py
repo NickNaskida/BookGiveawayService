@@ -1,7 +1,9 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Depends
 
 from src import crud
+from src.models import User
+from src.api.deps import current_active_superuser
 from src.schemas.genre import GenreRead, GenreCreate, GenreUpdate
 
 
@@ -42,14 +44,21 @@ async def get_genre_by_id(genre_id: int) -> GenreRead:
 
 
 @router.post("/", responses={409: {"description": "Genre already exists"}})
-async def create_genre(genre: GenreCreate) -> GenreRead:
+async def create_genre(
+    genre_new: GenreCreate,
+    user: User = Depends(current_active_superuser)
+) -> GenreRead:
     """
     Create new genre.
 
-    :param genre: Genre object.
+    Required role:
+    - Superuser
+
+    :param genre_new: Genre object.
+    :param user: Superuser user object.
     :return: Created genre object.
     """
-    genre = await crud.genre.create(obj_in=genre)
+    genre = await crud.genre.create(obj_in=genre_new)
     return genre
 
 
@@ -60,12 +69,20 @@ async def create_genre(genre: GenreCreate) -> GenreRead:
         409: {"description": "Genre already exists"},
     }
 )
-async def update_genre(genre_id: int, genre_new: GenreUpdate) -> GenreRead:
+async def update_genre(
+    genre_id: int,
+    genre_new: GenreUpdate,
+    user: User = Depends(current_active_superuser)
+) -> GenreRead:
     """
     Update genre by id.
 
+    Required role:
+    - Superuser
+
     :param genre_id: Genre id.
     :param genre_new: New genre object.
+    :paSuperuser user object.
     :return: Updated genre object.
     """
     genre = await crud.genre.get(_id=genre_id)
@@ -78,11 +95,18 @@ async def update_genre(genre_id: int, genre_new: GenreUpdate) -> GenreRead:
 
 
 @router.delete("/{genre_id}", responses={404: {"description": "Genre not found"}})
-async def delete_genre(genre_id: int) -> Response:
+async def delete_genre(
+    genre_id: int,
+    user: User = Depends(current_active_superuser)
+) -> Response:
     """
     Delete genre by id.
 
+    Required role:
+    - Superuser
+
     :param genre_id: Genre id.
+    :param user: Superuser user object.
     :return: 204 response.
     """
     genre = await crud.genre.get(_id=genre_id)

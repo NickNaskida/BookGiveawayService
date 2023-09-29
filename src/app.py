@@ -9,6 +9,7 @@ from src.api.api_v1.api import api_router
 from src.core.config import settings
 from src.core.utils import get_sqlalchemy_uri
 from src.core.logger import configure_logger
+from src.utils.dummy_data import create_dummy_data
 
 
 def create_app() -> FastAPI:
@@ -46,6 +47,10 @@ def create_app() -> FastAPI:
 
     # Routers
     app.include_router(api_router, prefix=settings.API_V1_STR)
+
+    @app.on_event("startup")
+    async def on_startup():
+        await create_dummy_data()
 
     return app
 

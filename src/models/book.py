@@ -24,6 +24,4 @@ class Book(PkBase):
     author = relationship('Author', back_populates='books', lazy='selectin')
     genre_id = Column(Integer, ForeignKey('genres.id'))
     genre = relationship('Genre', back_populates='books', lazy='selectin')
-
-
-
+    locations = relationship('BookLocation', back_populates='book', lazy='selectin')

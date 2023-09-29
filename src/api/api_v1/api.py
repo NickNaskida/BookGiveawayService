@@ -6,7 +6,8 @@ from src.modules.auth.routers import users_router
 from src.api.api_v1.endpoints import (
     genre,
     author,
-    book
+    book,
+    pickup
 )
 
 
@@ -61,3 +62,11 @@ api_router.include_router(
     prefix="/books",
     tags=["book"],
 )
+
+# Pickup routes
+api_router.include_router(
+    pickup.router,
+    prefix="/pickup-locations",
+    tags=["pickup-location"],
+)
+
