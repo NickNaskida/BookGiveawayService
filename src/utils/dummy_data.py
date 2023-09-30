@@ -6,7 +6,7 @@ from src.schemas.user import UserCreate
 from src.modules.auth.manager import get_user_manager
 from src.models.user import get_user_db
 from src.db.session import get_async_session
-from src.models import User, Location, BookLocation
+from src.models import User, BookLocation, Author, Genre, Book
 
 
 get_async_session_context = contextlib.asynccontextmanager(get_async_session)
@@ -26,23 +26,20 @@ async def create_user(email: str, password: str, is_superuser: bool = False, is_
 
 
 async def create_dummy_data():
-    dummy_location_1 = Location(
-        name="Dummy Location 1",
-        address="Dummy Address 1",
-    )
-    dummy_location_2 = Location(
-        name="Dummy Location 2",
-        address="Dummy Address 2",
-    )
+    author_1 = Author(full_name="J. K. Rowling")
+    author_2 = Author(full_name="J. R. R. Tolkien")
+    genre_1 = Genre(name="Fantasy")
+    genre_2 = Genre(name="Adventure")
 
     async with db():
         # Clear up database
+        await db.session.execute(delete(Book))
         await db.session.execute(delete(User))
         await db.session.execute(delete(BookLocation))
-        await db.session.execute(delete(Location))
+        await db.session.execute(delete(Author))
+        await db.session.execute(delete(Genre))
 
-        # Create dummy data
-        db.session.add_all([dummy_location_1, dummy_location_2])
+        db.session.add_all([author_1, author_2, genre_1, genre_2])
 
         await db.session.commit()
 
@@ -54,8 +51,14 @@ async def create_dummy_data():
         True
     )
     await create_user(
-        "test@gmail.com",
-        "test",
+        "test1@gmail.com",
+        "test1",
+        False,
+        True
+    )
+    await create_user(
+        "test2@gmail.com",
+        "test2",
         False,
         True
     )

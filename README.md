@@ -12,9 +12,12 @@ Test users:
 Email: admin@gmail.com
 Password: admin
 
-# Plain user, email verified
-Email: test@gmail.com
-Password: test
+# Plain users, email verified
+Email: test1@gmail.com
+Password: test1
+
+Email: test2@gmail.com
+Password: test2
 ```
 
 ### Project Structure

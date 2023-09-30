@@ -1,11 +1,12 @@
+import uuid
 from typing import List
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.models.book import BookCondition
 from src.schemas.author import AuthorRead
 from src.schemas.genre import GenreRead
-from src.schemas.location import LocationRead
+from src.schemas.user import UserRead
 
 
 class BookBase(BaseModel):
@@ -15,11 +16,18 @@ class BookBase(BaseModel):
     page_count: int = 320
 
 
+class BookLocationBase(BaseModel):
+    address: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class BookRead(BookBase):
     id: int
     author: AuthorRead
     genre: GenreRead
-    locations: List[LocationRead]
+    locations: List[BookLocationBase]
+    owner_id: uuid.UUID
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -27,6 +35,7 @@ class BookRead(BookBase):
 class BookCreate(BookBase):
     author_id: int = 1
     genre_id: int = 1
+    owner_id: uuid.UUID
 
 
 class BookUpdate(BookBase):
@@ -34,20 +43,13 @@ class BookUpdate(BookBase):
     genre_id: int = 1
 
 
-class BookLocationBase(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-
 class BookLocationRead(BookLocationBase):
     book: BookRead
-    location: LocationRead
 
 
 class BookLocationCreate(BookLocationBase):
     book_id: int
-    location_id: int
 
 
 class BookLocationUpdate(BookLocationBase):
     book_id: int
-    location_id: int

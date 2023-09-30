@@ -1,8 +1,8 @@
-"""initial
+"""remove back_populates on user
 
-Revision ID: 9970ea3eba08
-Revises: 765a293d1d3e
-Create Date: 2023-09-25 23:39:14.507085
+Revision ID: d58408677154
+Revises: 4a605f2a2304
+Create Date: 2023-09-29 21:39:15.896002
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '9970ea3eba08'
-down_revision: Union[str, None] = '765a293d1d3e'
+revision: str = 'd58408677154'
+down_revision: Union[str, None] = '4a605f2a2304'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

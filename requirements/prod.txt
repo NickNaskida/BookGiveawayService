@@ -6,7 +6,6 @@ fastapi-users==12.1.2
 starlette-csrf==3.0.0
 fastapi-users-db-sqlalchemy==6.0.1
 starlette-admin==0.11.2
-fastapi-filter==0.6.2
 
 # Validation
 pydantic==2.4.0
