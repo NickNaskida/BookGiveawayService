@@ -26,11 +26,6 @@
  - Docker Compose
  - Pytest
 
-### Project Structure
-```
-.
-```
-
 ### Setup
 1. Clone the repository
     ```
