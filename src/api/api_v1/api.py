@@ -7,7 +7,8 @@ from src.api.api_v1.endpoints import (
     genre,
     author,
     book,
-    pickup
+    pickup,
+    request
 )
 
 
@@ -70,3 +71,9 @@ api_router.include_router(
     tags=["pickup-location"],
 )
 
+# Request routes
+api_router.include_router(
+    request.router,
+    prefix="/book-requests",
+    tags=["book-request"],
+)

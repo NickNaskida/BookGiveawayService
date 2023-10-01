@@ -6,7 +6,7 @@ from src.schemas.user import UserCreate
 from src.modules.auth.manager import get_user_manager
 from src.models.user import get_user_db
 from src.db.session import get_async_session
-from src.models import User, BookLocation, Author, Genre, Book
+from src.models import User, BookLocation, Author, Genre, Book, BookRequest
 
 
 get_async_session_context = contextlib.asynccontextmanager(get_async_session)
@@ -33,6 +33,7 @@ async def create_dummy_data():
 
     async with db():
         # Clear up database
+        await db.session.execute(delete(BookRequest))
         await db.session.execute(delete(Book))
         await db.session.execute(delete(User))
         await db.session.execute(delete(BookLocation))
