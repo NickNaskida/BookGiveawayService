@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir -r ./requirements.txt
 # Copy project files
 COPY src ./src
 COPY tests ./tests
+COPY envs ./envs
 
 # Copy alembic stuff
 COPY ./alembic.ini ./alembic.ini
