@@ -40,11 +40,6 @@ class DevSettings(BaseSettings):
     POSTGRES_PORT: str
     POSTGRES_DB: str
 
-    # Redis
-    REDIS_HOST: str
-    REDIS_PORT: str
-    REDIS_DB: int
-
     # Environment
     model_config = SettingsConfigDict(
         env_file=os.path.join(BASE_DIR, "envs/.env"),

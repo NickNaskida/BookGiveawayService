@@ -13,17 +13,6 @@ def get_sqlalchemy_uri() -> str:
     return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db_name}"
 
 
-def get_redis_uri(db: int) -> str:
-    """
-    Get the URI for the Redis database.
-
-    :param db: The database number.
-    :return: The URI for the Redis database.
-    """
-    host, port = settings.REDIS_HOST, settings.REDIS_PORT
-    return f"redis://{host}:{port}/{db}"
-
-
 def get_api_url() -> str:
     """
     Get the URL for the API.
