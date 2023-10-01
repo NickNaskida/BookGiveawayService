@@ -27,14 +27,14 @@ RUN pip install --no-cache-dir -r ./requirements.txt
 COPY src ./src
 COPY tests ./tests
 COPY envs ./envs
+COPY entrypoint.sh ./entrypoint.sh
 
 # Copy alembic stuff
 COPY ./alembic.ini ./alembic.ini
-COPY ./migrations ./migrations
-
-# migrate database
-RUN alembic upgrade head
+COPY migrations ./migrations
 
 EXPOSE 8000
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
