@@ -31,6 +31,9 @@ COPY tests ./tests
 COPY ./alembic.ini ./alembic.ini
 COPY ./migrations ./migrations
 
+# migrate database
+RUN alembic upgrade head
+
 EXPOSE 8000
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
