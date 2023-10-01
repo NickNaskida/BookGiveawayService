@@ -46,7 +46,7 @@ async def get_book_requests(
     return book_requests
 
 
-@router.post("/{book_id}")
+@router.post("/{book_id}", status_code=201)
 async def create_book_request(
     book_id: int,
     user: User = Depends(current_active_user)

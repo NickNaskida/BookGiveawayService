@@ -48,7 +48,7 @@ async def get_book_by_id(book_id: int) -> BookRead:
     return book
 
 
-@router.post("/", responses={409: {"description": "Book already exists"}})
+@router.post("/", responses={409: {"description": "Book already exists"}}, status_code=201)
 async def create_book(
     book_new: BookCreate,
     user: User = Depends(current_active_user)

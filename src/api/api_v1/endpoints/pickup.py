@@ -8,7 +8,7 @@ from src.schemas.book import BookLocationRead, BookLocationCreate
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/", status_code=201)
 async def add_pickup_location_for_book(
     pickup_location_new: BookLocationCreate,
     current_user: User = Depends(current_active_user)

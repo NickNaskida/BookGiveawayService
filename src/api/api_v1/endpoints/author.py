@@ -43,7 +43,7 @@ async def get_author_by_id(author_id: int) -> AuthorRead:
     return author
 
 
-@router.post("/", responses={409: {"description": "Author already exists"}})
+@router.post("/", responses={409: {"description": "Author already exists"}}, status_code=201)
 async def create_author(
     author_new: AuthorCreate,
     user: User = Depends(current_active_superuser)

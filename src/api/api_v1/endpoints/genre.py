@@ -43,7 +43,7 @@ async def get_genre_by_id(genre_id: int) -> GenreRead:
     return genre
 
 
-@router.post("/", responses={409: {"description": "Genre already exists"}})
+@router.post("/", responses={409: {"description": "Genre already exists"}}, status_code=201)
 async def create_genre(
     genre_new: GenreCreate,
     user: User = Depends(current_active_superuser)

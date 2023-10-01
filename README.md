@@ -22,7 +22,6 @@
  - Python 3.10
  - FastAPI
  - PostgreSQL
- - Redis
  - Docker
  - Docker Compose
  - Pytest
