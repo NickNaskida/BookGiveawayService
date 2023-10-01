@@ -39,7 +39,7 @@
 
 3. Copy env file in `envs` directory
     ```
-    cp example.env .env
+    cp envs/example.env envs/.env
     ```
 
 4. Run docker compose
