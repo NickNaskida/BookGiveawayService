@@ -11,7 +11,6 @@ services:
       - ./tests:/code/tests
     depends_on:
       - postgres
-      - redis
     env_file:
       - envs/.env
 
@@ -24,7 +23,7 @@ services:
     env_file:
       - envs/postgres.env
     volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
 volumes:
   backend-data:
