@@ -2,7 +2,7 @@
 
 ### Project Note
  - Register endpoint ignores `is_active`, `is_superuser`, `is_verified` fields. That's a FastAPI-Users specification
- - **Testing is not fully complete**. I've wrote tests for only a few endpoints for demonstration purposes. (Sorry didn't manage to finish it in time)
+ - **Testing is not fully complete**.
  - **Test users**:
     
     ```
